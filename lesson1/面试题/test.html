@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <body>
+    <div id="box">Box</div>
+    <script>
+      console.log('1. 同步代码开始')
+
+      // MutationObserver：观察 box 的子节点变化
+      const box = document.getElementById('box')
+      const observer = new MutationObserver(() => {
+        console.log('4. MutationObserver 回调（微任务）')
+      })
+      observer.observe(box, { childList: true })
+
+      // queueMicrotask
+      queueMicrotask(() => {
+        console.log('3. queueMicrotask 回调（微任务）')
+      })
+
+      // requestIdleCallback
+      requestIdleCallback(() => {
+        console.log('5. requestIdleCallback 回调（空闲任务）')
+      })
+
+      // 修改 DOM 触发 MutationObserver（它会被加入微任务队列）
+      box.appendChild(document.createElement('span'))
+
+      console.log('2. 同步代码结束')
+
+      // 注意：实际输出顺序可能因浏览器空闲时机而略有差异，但微任务总是在空闲之前
+      // 通常输出：
+      // 1. 同步代码开始
+      // 2. 同步代码结束
+      // 3. queueMicrotask 回调（微任务）
+      // 4. MutationObserver 回调（微任务）   （顺序取决于添加顺序）
+      // 5. requestIdleCallback 回调（空闲任务）
+    </script>
+  </body>
+</html>

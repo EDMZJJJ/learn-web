@@ -34,37 +34,37 @@ console.log('script end')
 // promise2
 // setTimeout
 
-async function async1() {
-  console.log('async1 start')
-  await async2()
-  await async3() //微任务1
-  console.log('async1 end') //微任务3
-}
+// async function async1() {
+//   console.log('async1 start')
+//   await async2()
+//   await async3() //微任务1
+//   console.log('async1 end') //微任务3
+// }
 
-async function async2() {
-  console.log('async2')
-}
+// async function async2() {
+//   console.log('async2')
+// }
 
-async function async3() {
-  console.log('async3')
-}
+// async function async3() {
+//   console.log('async3')
+// }
 
-console.log('script start')
+// console.log('script start')
 
-setTimeout(function () {
-  console.log('setTimeout')
-}, 0)
+// setTimeout(function () {
+//   console.log('setTimeout')
+// }, 0)
 
-async1()
+// async1()
 
-new Promise(function (resolve) {
-  console.log('promise1')
-  resolve()
-}).then(function () {
-  console.log('promise2') //微任务2
-})
+// new Promise(function (resolve) {
+//   console.log('promise1')
+//   resolve()
+// }).then(function () {
+//   console.log('promise2') //微任务2
+// })
 
-console.log('script end')
+// console.log('script end')
 
 // script start
 // async1 start
@@ -76,31 +76,49 @@ console.log('script end')
 // async1 end
 // setTimeout
 
-const p = new Promise((resolve, reject) => {
-  console.log(1)
-  setTimeout(() => {
-    console.log(2)
-    resolve()
-  }, 1000)
-})
+// const p = new Promise((resolve, reject) => {
+//   console.log(1)
+//   setTimeout(() => {
+//     console.log(2)
+//     resolve()
+//   }, 1000)
+// })
 
-p.then(() => console.log(3))
+// p.then(() => console.log(3))
 
-console.log(4)
+// console.log(4)
 
 //1  4  2  3
 
-const p = new Promise((resolve, reject) => {
-  console.log(1)
-  setTimeout(() => {
-    console.log(2)
-    resolve()
-    console.log(5)
-  }, 1000)
-})
+// const p = new Promise((resolve, reject) => {
+//   console.log(1)
+//   setTimeout(() => {
+//     console.log(2)
+//     resolve()
+//     console.log(5)
+//   }, 1000)
+// })
 
-p.then(() => console.log(3))
+// p.then(() => console.log(3))
 
-console.log(4)
+// console.log(4)
 
 //1  4  2  5 3
+
+console.log('S')
+
+setTimeout(() => {
+  console.log('T1')
+  Promise.resolve().then(() => console.log('m-in-T1'))
+}, 0)
+
+Promise.resolve().then(() => {
+  console.log('m1')
+  queueMicrotask(() => console.log('m2'))
+})
+
+setTimeout(() => console.log('T2'), 0)
+
+console.log('E')
+
+// S  E  m1  m2  T1  m-in-T1  T2
